@@ -35,8 +35,5 @@ En cuanto al género y la region del solicitante nos encontramos lo siguiente:
   </div>
 </div>
 
-Hay una disparidad muy grande entre hombres y mujeres en cuanto a solicitud de préstamos, al igual que en las regiones.
+Hay una disparidad muy grande entre hombres y mujeres en cuanto a solicitud de préstamos sin embargo, el porcentaje de aceptados es mayor para las mujeres, un **14%** por un **9.35%** de los hombres. En cuanto a las regiones, las tres regiones que más prestamos solicitan son la región 3, 6 y 2, mientras que en porcentaje de aceptación, las tres primeras son la **region 4** con un **12.4%**, la **region 3** con un **11.4%**, y la **region 0** con un **10.5%**.
 
-| Género                         | Región                          |
-|:----------------------------------:|:----------------------------------:|
-| ![Solicitud por género](img/EDA/genre.png)      | ![Solicitud por región](img/EDA/region.png)      |
