@@ -18,7 +18,7 @@ El proyecto se divide en las siguientes partes:
 
 Con el análisis exploratorio de datos se han comprobado las distintas relaciones entre la concesión o no del préstamo, con diferentes características del solicitante, es decir, su género, la región de la que proviene, o qué mes pidió el préstamo. las siguientes gráficas ilustra lo anterior:
 
-![Mes donde mas se solicitan préstamos](img/month.png)
+![Mes donde mas se solicitan préstamos](img/EDA/month.png)
 
 Como se puede comprobar, octubre es el mes donde mas préstamos se solicitan.
 
@@ -26,11 +26,11 @@ En cuanto al género y la region del solicitante nos encontramos lo siguiente:
 
 <div style="display: flex;">
   <div style="flex: 50%;">
-    <img src="img/genre.png" width="100%">
+    <img src="img/EDA/genre.png" width="100%">
     <p align="center">Solicitud de préstamo por género</p>
   </div>
   <div style="flex: 50%;">
-    <img src="imagen2.jpg"  width="100%">
+    <img src="img/EDA/region.png"  width="100%">
     <p align="center">Solicitud de préstamo por región</p>
   </div>
 </div>
