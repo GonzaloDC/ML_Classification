@@ -55,7 +55,38 @@ En esta segunda parte se utiliza el dataset modificado obtenido desde el noteboo
 | RandomForestClassifier| 0.1836      | 0.9036      | 0.6      | 0.1084      |
 | ExtraTreesClassifier  | 0.1020      | 0.8939      | 0.3333      | 0.0602      |
 
-Como se puede comprobar, las métricas reflejan un claro desbalanceamiento de clases, ya que aunque la métrica accuracy es muy alta para todas los algoritmos, el recall y la precisión son muy bajas, esto quiere decir que nuestro modelo no es capaz de clasificar correctamente los casos donde bad_flag es 1, ya que recall (cantidad de casos que nuestro modelo es capaz de predecir correctamente) y precision (si lo que predice nuestro modelo es correcto) tienen unos valores bajos. A modo de ejemplo, la siguiente matriz de confusión (Del RandomForestClassifier) muestra el numero de muestras predichas:
+Como se puede comprobar, las métricas reflejan un claro desbalanceamiento de clases, ya que aunque la métrica accuracy es muy alta para todas los algoritmos, el recall y la precisión son muy bajas, esto quiere decir que nuestro modelo no es capaz de clasificar correctamente los casos donde bad_flag es 1, ya que recall (cantidad de casos que nuestro modelo es capaz de predecir correctamente) y precision (si lo que predice nuestro modelo es correcto) tienen unos valores bajos. A modo de ejemplo, la siguiente matriz de confusión (Del RandomForestClassifier) muestra el número de muestras predichas:
 
 
 ![Matriz de confusión del algoritmo RandomForestClassifier](img/main/randomforestclas_cm.png)
+
+Donde se ve que aunque la precision sea de 0.6, es debido a que el número de muestras que se clasifican como 1 correctamente (nueve) y el número de muestras incorrectamente predichas como 1 (seis) son muy pocas. Por tanto, lo siguiente que se va a hacer es aplicar submuestreo y sobremuestreo para balancear la variable **bad_flag**.
+
+### 2.1) Undersample with RandomUnderSampler
+
+Este proceso se realiza en el notebook **Exp_1 Undersampling** y los pasos a realizar son los siguientes:
+- Se divide el dataset original en las muestras train y test.
+- Se aplica RandomUnderSampler de la libreria imblearn sólo a la parte de entrenamiento, para evaluar el modelo correctamente.
+- Se vuelven a entrenar los modelos anteriores y además de utilizan tambien KNeighborsClassifier y LogisticRegression.
+- Viendo los resultados, se ha elegido RandomForest para realizar una prueba un poco mas exhaustiva y probar diferentes hiperparámetros. Para ello se utiliza la libreria **optuna** que nos permite probar diferentes combinaciones para obtener un mejor rendimiento. En este caso, la métrica utilizada para evaluar dicho rendimiento, es el F1-score.
+
+Los resultados obtenidos son los siguientes, para el modelo RandomForest, aplicando los hiperparámetros por defecto:  
+
+
+![Matriz de confusión del algoritmo RandomForestClassifier con Undersampling](img/exp1/rand_for_sinoptuna.png)
+
+| Algoritmo             | F1-Score  | Accuracy  | Precisión | Recall    |
+|-----------------------|-----------|-----------|-----------|-----------|
+| RandomForestClassifier| 0.3052      | 0.6819      | 0.1952      | 0.6987      |
+
+Utilizando optuna, se observa que los mejores hiperparametros son 'n_estimators': 164 y 'max_depth': 4. El modelo obtiene asi los siguientes resultados:
+
+![Matriz de confusión del algoritmo RandomForestClassifier con Undersampling y optimización de hiperparámetros](img/exp1/rand_for_conoptuna.png)
+
+| Algoritmo             | F1-Score  | Accuracy  | Precisión | Recall    |
+|-----------------------|-----------|-----------|-----------|-----------|
+| RandomForestClassifier| 0.3243      | 0.6987      | 0.2090      | 0.7228      |
+
+Se observa una mejora en los resultados, pero es una mejora muy pequeña. Por último, la curva ROC queda como sigue: 
+
+![Curva ROC](img/exp1/curva_ROC.png)
