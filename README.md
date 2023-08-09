@@ -36,3 +36,7 @@ En cuanto al género y la region del solicitante nos encontramos lo siguiente:
 </div>
 
 Hay una disparidad muy grande entre hombres y mujeres en cuanto a solicitud de préstamos, al igual que en las regiones.
+
+| Genero                         | Region                          |
+|:----------------------------------:|:----------------------------------:|
+| ![Descripción 1](img/EDA/genre.png.jpg)      | ![img/EDA/region.png](imagen2.jpg)      |
