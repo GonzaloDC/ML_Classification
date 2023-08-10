@@ -30,17 +30,6 @@ En cuanto al género y la region del solicitante nos encontramos lo siguiente:
 ![Mes donde mas se solicitan préstamos](img/EDA/region.png)
 
 
-<!-- <div style="display: flex;">
-  <div style="flex: 50%;">
-    <img src="img/EDA/genre.png" width="100%">
-    <p align="center">Solicitud de préstamo por género</p>
-  </div>
-  <div style="flex: 50%;">
-    <img src="img/EDA/region.png"  width="100%">
-    <p align="center">Solicitud de préstamo por región</p>
-  </div>
-</div> -->
-
 Hay una disparidad muy grande entre hombres y mujeres en cuanto a solicitud de préstamos sin embargo, el porcentaje de aceptados es mayor para las mujeres, un **14%** por un **9.35%** de los hombres. En cuanto a las regiones, las tres regiones que más prestamos solicitan son la región 3, 6 y 2, mientras que en porcentaje de aceptación, las tres primeras son la **region 4** con un **12.4%**, la **region 3** con un **11.4%**, y la **region 0** con un **10.5%**.
 
 
@@ -57,8 +46,9 @@ En esta segunda parte se utiliza el dataset modificado obtenido desde el noteboo
 
 Como se puede comprobar, las métricas reflejan un claro desbalanceamiento de clases, ya que aunque la métrica accuracy es muy alta para todas los algoritmos, el recall y la precisión son muy bajas, esto quiere decir que nuestro modelo no es capaz de clasificar correctamente los casos donde bad_flag es 1, ya que recall (cantidad de casos que nuestro modelo es capaz de predecir correctamente) y precision (si lo que predice nuestro modelo es correcto) tienen unos valores bajos. A modo de ejemplo, la siguiente matriz de confusión (Del RandomForestClassifier) muestra el número de muestras predichas:
 
-
-![Matriz de confusión del algoritmo RandomForestClassifier](img/main/randomforestclas_cm.png)
+<p align="center">
+  <img src="img/main/randomforestclas_cm.png" />
+</p>
 
 Donde se ve que aunque la precision sea de 0.6, es debido a que el número de muestras que se clasifican como 1 correctamente (nueve) y el número de muestras incorrectamente predichas como 1 (seis) son muy pocas. Por tanto, lo siguiente que se va a hacer es aplicar submuestreo y sobremuestreo para balancear la variable **bad_flag**.
 
@@ -72,8 +62,10 @@ Este proceso se realiza en el notebook **Exp_1 Undersampling** y los pasos a rea
 
 Los resultados obtenidos son los siguientes, para el modelo RandomForest, aplicando los hiperparámetros por defecto:  
 
+<p align="center">
+  <img src="img/exp1/rand_for_sinoptuna.png" />
+</p>
 
-![Matriz de confusión del algoritmo RandomForestClassifier con Undersampling](img/exp1/rand_for_sinoptuna.png)
 
 | Algoritmo             | F1-Score  | Accuracy  | Precisión | Recall    |
 |-----------------------|-----------|-----------|-----------|-----------|
@@ -81,7 +73,9 @@ Los resultados obtenidos son los siguientes, para el modelo RandomForest, aplica
 
 Utilizando optuna, se observa que los mejores hiperparametros son 'n_estimators': 164 y 'max_depth': 4. El modelo obtiene asi los siguientes resultados:
 
-![Matriz de confusión del algoritmo RandomForestClassifier con Undersampling y optimización de hiperparámetros](img/exp1/rand_for_conoptuna.png)
+<p align="center">
+  <img src="img/exp1/rand_for_conoptuna.png" />
+</p>
 
 | Algoritmo             | F1-Score  | Accuracy  | Precisión | Recall    |
 |-----------------------|-----------|-----------|-----------|-----------|
@@ -89,4 +83,6 @@ Utilizando optuna, se observa que los mejores hiperparametros son 'n_estimators'
 
 Se observa una mejora en los resultados, pero es una mejora muy pequeña. Por último, la curva ROC queda como sigue: 
 
-![Curva ROC](img/exp1/curva_ROC.png)
+<p align="center">
+  <img src="img/exp1/curva_ROC.png" />
+</p>
