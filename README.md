@@ -52,7 +52,7 @@ Como se puede comprobar, las métricas reflejan un claro desbalanceamiento de cl
 
 Donde se ve que aunque la precision sea de 0.6, es debido a que el número de muestras que se clasifican como 1 correctamente (nueve) y el número de muestras incorrectamente predichas como 1 (seis) son muy pocas. Por tanto, lo siguiente que se va a hacer es aplicar submuestreo y sobremuestreo para balancear la variable **bad_flag**.
 
-### 2.1) Undersample with RandomUnderSampler
+### 2.1) Undersample con RandomUnderSampler
 
 Este proceso se realiza en el notebook **Exp_1 Undersampling** y los pasos a realizar son los siguientes:
 - Se divide el dataset original en las muestras train y test.
@@ -81,8 +81,79 @@ Utilizando optuna, se observa que los mejores hiperparametros son 'n_estimators'
 |-----------------------|-----------|-----------|-----------|-----------|
 | RandomForestClassifier| 0.3243      | 0.6987      | 0.2090      | 0.7228      |
 
-Se observa una mejora en los resultados, pero es una mejora muy pequeña. Por último, la curva ROC queda como sigue: 
+Se observa una pequeña mejora en los resultados, pero es casi imperceptible. Por último, la curva ROC queda como sigue: 
 
 <p align="center">
   <img src="img/exp1/curva_ROC.png" />
 </p>
+
+De los resultados anteriores se puede concluir que al aplicar undersampling el modelo etiqueta muchas muestras como 1, por lo que esta perdiendo mucha información sobre el resto de muestras. El siguiente experimento utilizará la técnica de oversampling para aumentar sintéticamente las muestras de la clase minoritaria.
+
+### 2.2) Oversample con SMOTE
+
+El notebook **Exp_2 SMOTE** se divide en las siguientes partes:
+- Se divide el dataset original en las muestras train y test.
+- En este notebook se utilizara SMOTE de dos formas. La primera sin Cross-Validation, y la segunda utilizandolo.
+
+Sin cross-validation:
+- Se aplica SMOTE directamente a la parte de train para que test no se vea afectado y se evalue el modelo correctamente.
+- Se entrenan los modelos anteriores.
+- Se plotea la matriz de confusión junto con las métricas obtenidas para cada modelo.
+- Se ha elegido el algoritmo RandomForest para aplicar optuna y probar diferentes hiperparámetros
+
+Con cross-validation:
+- Para aplicar correctamente cross-validation y smote, hay que aislar cada muestra y entonces aplicar SMOTE: 
+
+```python
+rand_for_sm=RandomForestClassifier()
+
+rand_for_params = {
+    'n_estimators': [50, 100, 150, 200], 
+    'max_depth': [10, 20, 30],  
+}
+rand_rand_for = RandomizedSearchCV(RandomForestClassifier(), rand_for_params, n_iter=4)
+
+sss = StratifiedKFold(n_splits=5, random_state=None, shuffle=False)
+
+for train, test in sss.split(X_train, y_train):
+    pipeline = make_pipeline(SMOTE(sampling_strategy='minority'), rand_rand_for) # SMOTE happens during Cross Validation not before..
+    model = pipeline.fit(X_train.iloc[train], y_train.iloc[train])
+    best_est = rand_rand_for.best_estimator_
+    prediction = best_est.predict(X_train.iloc[test])
+```
+- Finalmente se aplica el modelo final al test.
+
+Los resultados obtenidos han sido los siguientes, sin cross-validation:
+
+<p align="center">
+  <img src="img/exp2/cm_sincross.png" />
+</p>
+
+| Algoritmo             | F1-Score  | Accuracy  | Precisión | Recall    |
+|-----------------------|-----------|-----------|-----------|-----------|
+| RandomForestClassifier| 0.3579      | 0.8012      | 0.2643      | 0.5542      |
+
+
+<p align="center">
+  <img src="img/exp2/curvaroc_sincross.png" />
+</p>
+
+De los resultados sin cross validation (usando el conjunto completo de train para aplicar SMOTE) se puede observar que el modelo sigue clasificando incorrectamente muestras como 1, aunque ha obtenido mejores resultados que con el undersampling.
+
+<p align="center">
+  <img src="img/exp2/cm_concross.png" />
+</p>
+
+| Algoritmo             | F1-Score  | Accuracy  | Precisión | Recall    |
+|-----------------------|-----------|-----------|-----------|-----------|
+| RandomForestClassifier| 0.2699      | 0.8566      | 0.275      | 0.2650      |
+
+
+<p align="center">
+  <img src="img/exp2/curvaroc_concross.png" />
+</p>
+
+Usando cross-validation se clasifican menos muestras como 1 erroneamente, pero tambien está lejos de tener un buen comportamiento, ya que tanto la precision como el recall tienen valores muy bajos, clasificando muchos valores erroneamente como 1 cuando no lo son, y clasificando como 0 cuando deberia ser al contrario. 
+En este caso, depende de si se permite cometer errores a la hora de clasificar como 1 (es decir, tenemos flexibilidad para tener una baja precision) podría valer este modelo, o se debería intentar mejorar las métricas obtenidas ya sea probando nuevos modelos, o mejorando los datos de entrada.
+
+
