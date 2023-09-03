@@ -123,7 +123,7 @@ for train, test in sss.split(X_train, y_train):
 ```
 - Finalmente se aplica el modelo final al test.
 
-Los resultados obtenidos han sido los siguientes, sin cross-validation:
+Los resultados obtenidos han sido los siguientes, **sin cross-validation**:
 
 <p align="center">
   <img src="img/exp2/cm_sincross.png" />
@@ -139,6 +139,8 @@ Los resultados obtenidos han sido los siguientes, sin cross-validation:
 </p>
 
 De los resultados sin cross validation (usando el conjunto completo de train para aplicar SMOTE) se puede observar que el modelo sigue clasificando incorrectamente muestras como 1, aunque ha obtenido mejores resultados que con el undersampling.
+
+Utilizando SMOTE con **cross-validation**:
 
 <p align="center">
   <img src="img/exp2/cm_concross.png" />
