@@ -156,6 +156,6 @@ Utilizando SMOTE con **cross-validation**:
 </p>
 
 Usando cross-validation se clasifican menos muestras como 1 erroneamente, pero tambien está lejos de tener un buen comportamiento, ya que tanto la precision como el recall tienen valores muy bajos, clasificando muchos valores erroneamente como 1 cuando no lo son, y clasificando como 0 cuando deberia ser al contrario. 
-En este caso, depende de si se permite cometer errores a la hora de clasificar como 1 (es decir, tenemos flexibilidad para tener una baja precision) podría valer este modelo, o se debería intentar mejorar las métricas obtenidas ya sea probando nuevos modelos, o mejorando los datos de entrada.
+En este caso, depende de si se permite cometer errores a la hora de clasificar como 1 (es decir, tenemos flexibilidad para tener una baja precision) podría valer este modelo, o se debería intentar mejorar las métricas obtenidas ya sea probando nuevos modelos, o mejorando los datos de entrada, escalando o codificando los años del primer préstamo por ejemplo.
 
 
